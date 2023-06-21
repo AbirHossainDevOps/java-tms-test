@@ -1,0 +1,39 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql-container
+    env_file:
+      - .env
+    restart: always
+    volumes:
+      - ./tms.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - project-network
+
+  java:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: abir-java-container
+    ports:
+      - 8080:8080
+    restart: always
+    depends_on:
+      - mysql
+    networks:
+      - project-network
+      
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile1
+    container_name: node-server-container
+    ports:
+      - 8082:3000
+    restart: always
+    networks:
+      - project-network
+  
+networks:
+  project-network:
