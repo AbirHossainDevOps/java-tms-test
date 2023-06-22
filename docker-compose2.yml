@@ -28,10 +28,11 @@ services:
     image: nginx:latest
     container_name: abir-webserver-container
     ports:
-      - 8085:80
+      - 8082:80
     restart: always
     volumes:
       - ./web/tms/build:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - project-network
   
